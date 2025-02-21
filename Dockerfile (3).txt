@@ -1,0 +1,21 @@
+# Use official Python image
+FROM python:3.11
+
+# Set the working directory in the container
+WORKDIR /app
+
+# Copy requirements and install dependencies
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy the rest of the application code
+
+# Set environment variable for Google Cloud credentials
+COPY myproject-1-450903-08a71306aee3.json /app/myproject-1-450903-08a71306aee3.json
+ENV GOOGLE_APPLICATION_CREDENTIALS="/app/myproject-1-450903-08a71306aee3.json"
+
+# Expose port 8080 for the Flask app
+EXPOSE 8080
+
+# Command to run the app with Gunicorn
+CMD ["gunicorn", "-w", "4", "-b", "0.0.0.0:8080", "main:app"]
